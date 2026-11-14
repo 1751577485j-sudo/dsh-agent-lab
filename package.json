@@ -1,0 +1,22 @@
+{
+  "name": "video-lab",
+  "private": true,
+  "version": "1.0.0",
+  "description": "扁平 MG 横屏无音轨视频工程模板",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "render": "node scripts/render.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "remotion": "4.0.537",
+    "@remotion/cli": "4.0.537",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "typescript": "5.9.3"
+  }
+}

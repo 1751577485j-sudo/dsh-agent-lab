@@ -9,13 +9,14 @@
 # 退出码：0 = 全部通过；1 = 有未通过项；2 = 执行错误
 set -uo pipefail
 
-VIDEO=""; SPEC="$(dirname "$0")/spec.json"; OUT="report.json"; OCR=""; BUILDINFO=""; COMMIT=""
+VIDEO=""; SPEC="$(dirname "$0")/spec.json"; OUT="report.json"; OCR=""; BUILDINFO=""; COMMIT=""; LAYOUT=""
 
 while [ $# -gt 0 ]; do
   case "$1" in
     --spec) SPEC="$2"; shift 2 ;;
     --out) OUT="$2"; shift 2 ;;
     --ocr) OCR="--ocr"; shift ;;
+    --layout) LAYOUT="$2"; shift 2 ;;
     --build-info) BUILDINFO="$2"; shift 2 ;;
     --commit) COMMIT="$2"; shift 2 ;;
     -h|--help) sed -n '2,10p' "$0"; exit 0 ;;
@@ -60,7 +61,7 @@ fi
 
 # ---------- 4. 帧级检查 ----------
 python3 "$(dirname "$0")/check_layout.py" \
-  --frames "$WORK/frames" --spec "$SPEC" --probe "$WORK/probe.json" --out "$OUT" $OCR
+  --frames "$WORK/frames" --spec "$SPEC" --probe "$WORK/probe.json" --out "$OUT" $OCR ${LAYOUT:+--layout "$LAYOUT"}
 RC=$?
 
 echo "--- 报告：$OUT（抽帧 $FRAMES 张，步长 ${STEP}s）---" >&2

@@ -1,0 +1,18 @@
+{
+  "composition": { "id": "Main", "width": 1920, "height": 1080, "fps": 30, "durationInFrames": 900 },
+  "safe": { "top": 162, "bottom": 162, "left": 96, "right": 96 },
+  "scenes": [
+    { "id": "s1", "name": "标题", "from": 0, "to": 150 },
+    { "id": "s2", "name": "数据", "from": 150, "to": 450 },
+    { "id": "s3", "name": "收尾", "from": 450, "to": 900 }
+  ],
+  "texts": [
+    { "id": "t1", "scene": "s1", "role": "L1", "text": "高动态范围", "cx": 960, "cy": 430, "from": 12, "to": 140 },
+    { "id": "t2", "scene": "s1", "role": "L3", "text": "0.001 – 10000 nit", "cx": 960, "cy": 560, "from": 30, "to": 140 },
+    { "id": "t3", "scene": "s2", "role": "L0", "text": "1000", "cx": 960, "cy": 470, "from": 170, "to": 430 },
+    { "id": "t4", "scene": "s2", "role": "L2", "text": "nit 峰值亮度", "cx": 960, "cy": 620, "from": 200, "to": 430 },
+    { "id": "t5", "scene": "s3", "role": "L1", "text": "不是更亮", "cx": 960, "cy": 430, "from": 470, "to": 560 },
+    { "id": "t6", "scene": "s3", "role": "L1", "text": "是更接近真实的光", "cx": 960, "cy": 570, "from": 560, "to": 880 },
+    { "id": "t7", "scene": "s3", "role": "L4", "text": "示意说明，非真实 HDR 母版", "cx": 960, "cy": 860, "from": 600, "to": 880 }
+  ]
+}

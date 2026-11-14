@@ -97,6 +97,7 @@ def main() -> int:
     ap.add_argument("--probe", required=True, help="ffprobe json path")
     ap.add_argument("--out", required=True)
     ap.add_argument("--ocr", action="store_true", help="enable OCR based checks")
+    ap.add_argument("--layout", help="out/layout.json emitted by the render script (exact boxes, preferred over OCR)")
     args = ap.parse_args()
 
     spec = json.load(open(args.spec, encoding="utf-8"))
@@ -196,8 +197,64 @@ def main() -> int:
                   "windows": windows})
     failed += 0 if ok else 1
 
+    # ---- exact box checks (preferred: boxes come from the render itself)
+    if args.layout:
+        lay = json.load(open(args.layout, encoding="utf-8"))
+        top_min = safe["topPct"] * H
+        bot_max = H - safe["bottomPct"] * H
+        left_min = safe["leftPx"]
+        right_max = W - safe["rightPx"]
+
+        worst_margin = None
+        min_font = None
+        worst_contrast = None
+
+        for box in lay.get("boxes", []):
+            margin = min(
+                box["y"] - top_min,
+                bot_max - (box["y"] + box["h"]),
+                box["x"] - left_min,
+                right_max - (box["x"] + box["w"]),
+            )
+            if worst_margin is None or margin < worst_margin["margin"]:
+                worst_margin = {"id": box["id"], "text": box["text"], "margin": round(margin, 1),
+                                "box": [box["x"], box["y"], box["w"], box["h"]], "t": round((box["from"] + box["to"]) / 2 * step, 1)}
+            if min_font is None or box["fontSize"] < min_font["fontSize"]:
+                min_font = {"id": box["id"], "text": box["text"], "fontSize": box["fontSize"]}
+
+            # contrast measured on the frame closest to the middle of its visible window
+            mid = (box["from"] + box["to"]) / 2
+            idx = min(len(frames) - 1, max(0, int(round(mid / step))))
+            c = box_contrast(frames[idx][1], box)
+            if worst_contrast is None or c < worst_contrast["contrast"]:
+                worst_contrast = {"id": box["id"], "text": box["text"], "contrast": round(c, 2)}
+
+        if worst_margin:
+            ok = worst_margin["margin"] >= -tol
+            items.append({"id": "A4.1", "pass": ok, "value": worst_margin["margin"],
+                          "threshold": f"≥{-tol} 像素（负值=越界）",
+                          "detail": f"文字距安全区最小余量（{worst_margin['text']}）",
+                          "worst": worst_margin, "source": "layout.json"})
+            failed += 0 if ok else 1
+
+        if min_font:
+            ok = min_font["fontSize"] >= typ["minFontPx"]
+            items.append({"id": "A5.3", "pass": ok, "value": min_font["fontSize"],
+                          "threshold": f"≥{typ['minFontPx']}px",
+                          "detail": f"最小字号（{min_font['text']}）",
+                          "worst": min_font, "source": "layout.json"})
+            failed += 0 if ok else 1
+
+        if worst_contrast:
+            ok = worst_contrast["contrast"] >= typ["contrast"]["small"]
+            items.append({"id": "A4.6", "pass": ok, "value": worst_contrast["contrast"],
+                          "threshold": f"≥{typ['contrast']['small']}:1",
+                          "detail": f"最低文字对比度（{worst_contrast['text']}）",
+                          "worst": worst_contrast, "source": "layout.json"})
+            failed += 0 if ok else 1
+
     # ---- OCR based checks
-    if args.ocr:
+    elif args.ocr:
         top_min = safe["topPct"] * H
         bot_max = H - safe["bottomPct"] * H
         left_min = safe["leftPx"]
