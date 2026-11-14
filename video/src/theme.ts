@@ -31,18 +31,28 @@ export const LINE_HEIGHT: Record<Role, number> = {
 
 export const COLOR = {
   bg: "#0E1116",
-  bgAlt: "#151A22",
+  bgAlt: "#18202B",
   ink: "#F5F7FA",
   accent: "#FFB25E",
   accent2: "#79B8FF",
   muted: "#93A1B1",
 } as const;
 
-/** 中文字宽 ≈ 1em，ASCII ≈ 0.55em */
+/** 全片唯一字族；字体在 load-fonts.ts 中显式加载 */
+export const FONT_FAMILY = '"Noto Sans SC", sans-serif';
+
+/**
+ * 估算文字宽度（emoji 等不参与本片）。
+ * 中文/全角标点按 1em，英文大写按 0.8em，其余按 0.65em —— 均取偏大值，
+ * 保证 layout.json 导出的包围盒不小于实际渲染宽度，安全区检查才有意义。
+ * 必须与 scripts/render.mjs 的 textWidth 保持一致。
+ */
 export function textWidth(text: string, fontSize: number): number {
   let em = 0;
   for (const ch of text) {
-    em += /[\u4e00-\u9fff]/.test(ch) ? 1 : 0.55;
+    if (/[\u3000-\u9fff\uff00-\uffef]/.test(ch)) em += 1;
+    else if (/[A-Z]/.test(ch)) em += 0.8;
+    else em += 0.65;
   }
   return em * fontSize;
 }
@@ -86,7 +96,7 @@ export function boxOf(t: {
   };
 }
 
-export function textStyle(box: Box, opacity: number): CSSProperties {
+export function textStyle(box: Box, opacity: number, translateY = 0): CSSProperties {
   return {
     position: "absolute",
     left: box.x,
@@ -96,9 +106,10 @@ export function textStyle(box: Box, opacity: number): CSSProperties {
     lineHeight: `${box.h}px`,
     fontWeight: FONT_WEIGHT[box.role],
     color: COLOR.ink,
-    fontFamily:
-      '"Alibaba PuHuiTi", "Noto Sans SC", "Source Han Sans SC", sans-serif',
+    fontFamily: FONT_FAMILY,
+    textAlign: "center",
     opacity,
     whiteSpace: "pre",
+    transform: `translateY(${translateY}px)`,
   };
 }

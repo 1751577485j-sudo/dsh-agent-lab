@@ -15,20 +15,26 @@
   "scenes": [
     {
       "id": "s1",
-      "name": "标题",
+      "name": "开场",
       "from": 0,
       "to": 300
     },
     {
       "id": "s2",
-      "name": "数据",
+      "name": "要解决的问题",
       "from": 300,
-      "to": 900
+      "to": 720
     },
     {
       "id": "s3",
-      "name": "收尾",
-      "from": 900,
+      "name": "已经普及",
+      "from": 720,
+      "to": 1200
+    },
+    {
+      "id": "s4",
+      "name": "画质差异",
+      "from": 1200,
       "to": 1800
     }
   ],
@@ -36,72 +42,102 @@
     {
       "id": "t1",
       "scene": "s1",
-      "role": "L1",
-      "text": "高动态范围",
+      "role": "L0",
+      "text": "HDR",
       "cx": 960,
-      "cy": 430,
+      "cy": 400,
       "from": 20,
-      "to": 280
+      "to": 290
     },
     {
       "id": "t2",
       "scene": "s1",
-      "role": "L3",
-      "text": "0.001 – 10000 nit",
+      "role": "L1",
+      "text": "高动态范围",
       "cx": 960,
-      "cy": 560,
-      "from": 60,
-      "to": 280
+      "cy": 590,
+      "from": 55,
+      "to": 290
     },
     {
       "id": "t3",
-      "scene": "s2",
-      "role": "L0",
-      "text": "1000",
+      "scene": "s1",
+      "role": "L4",
+      "text": "HIGH DYNAMIC RANGE",
       "cx": 960,
-      "cy": 470,
-      "from": 340,
-      "to": 860
+      "cy": 720,
+      "from": 105,
+      "to": 290
     },
     {
       "id": "t4",
       "scene": "s2",
       "role": "L2",
-      "text": "nit 峰值亮度",
+      "text": "HDR 想解决什么？",
       "cx": 960,
-      "cy": 620,
-      "from": 400,
-      "to": 860
+      "cy": 390,
+      "from": 320,
+      "to": 710
     },
     {
       "id": "t5",
-      "scene": "s3",
+      "scene": "s2",
       "role": "L1",
-      "text": "不是更亮",
+      "text": "明暗反差过大",
       "cx": 960,
-      "cy": 430,
-      "from": 940,
-      "to": 1120
+      "cy": 570,
+      "from": 380,
+      "to": 710
     },
     {
       "id": "t6",
       "scene": "s3",
       "role": "L1",
-      "text": "是更接近真实的光",
+      "text": "HDR 已是常见功能",
       "cx": 960,
-      "cy": 570,
-      "from": 1120,
-      "to": 1760
+      "cy": 360,
+      "from": 740,
+      "to": 1190
     },
     {
       "id": "t7",
       "scene": "s3",
-      "role": "L4",
-      "text": "示意说明，非真实 HDR 母版",
+      "role": "L3",
+      "text": "从手机、电视到电脑显示器",
       "cx": 960,
-      "cy": 860,
-      "from": 1200,
-      "to": 1760
+      "cy": 520,
+      "from": 800,
+      "to": 1190
+    },
+    {
+      "id": "t8",
+      "scene": "s4",
+      "role": "L2",
+      "text": "同样支持 HDR",
+      "cx": 960,
+      "cy": 340,
+      "from": 1220,
+      "to": 1780
+    },
+    {
+      "id": "t9",
+      "scene": "s4",
+      "role": "L0",
+      "text": "≠",
+      "cx": 960,
+      "cy": 520,
+      "from": 1280,
+      "to": 1780
+    },
+    {
+      "id": "t10",
+      "scene": "s4",
+      "role": "L1",
+      "text": "同样的画质",
+      "cx": 960,
+      "cy": 710,
+      "from": 1340,
+      "to": 1780
     }
   ],
   "targetDurationSec": 60
