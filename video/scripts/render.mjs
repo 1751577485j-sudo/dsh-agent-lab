@@ -71,6 +71,7 @@ writeFileSync(
       commit,
       renderedAt: new Date().toISOString(),
       durationSec: +(layout.composition.durationInFrames / layout.composition.fps).toFixed(3),
+      targetDurationSec: layout.targetDurationSec ?? null,
       resolution: `${layout.composition.width}x${layout.composition.height}`,
       fps: layout.composition.fps,
       audioStreams: 0,

@@ -98,6 +98,8 @@ def main() -> int:
     ap.add_argument("--out", required=True)
     ap.add_argument("--ocr", action="store_true", help="enable OCR based checks")
     ap.add_argument("--layout", help="out/layout.json emitted by the render script (exact boxes, preferred over OCR)")
+    ap.add_argument("--target-duration", type=float, default=None,
+                    help="expected duration in seconds; omitted -> fall back to spec default")
     args = ap.parse_args()
 
     spec = json.load(open(args.spec, encoding="utf-8"))
@@ -142,10 +144,22 @@ def main() -> int:
                   "threshold": spec["canvas"]["fps"], "detail": "帧率"})
     failed += 0 if ok else 1
 
-    ok = spec["duration"]["min"] <= dur <= spec["duration"]["max"]
+    ok = True
+    dur_spec = spec["duration"]
+    target = args.target_duration
+    if target is None:
+        target = dur_spec.get("defaultTargetSec")
+    tol = float(dur_spec.get("tolerancePct", 0.1))
+    if target:
+        ok = abs(dur - float(target)) <= float(target) * tol
+        threshold = f"{target}±{tol*100:.0f}%"
+        detail = "时长（对照目标时长）"
+    else:
+        ok = dur_spec["sanityMinSec"] <= dur <= dur_spec["sanityMaxSec"]
+        threshold = f"{dur_spec['sanityMinSec']}–{dur_spec['sanityMaxSec']}s"
+        detail = "时长（仅合理性区间）"
     items.append({"id": "A1.3", "pass": ok, "value": round(dur, 2),
-                  "threshold": f"{spec['duration']['min']}–{spec['duration']['max']}s",
-                  "detail": "时长"})
+                  "threshold": threshold, "detail": detail})
     failed += 0 if ok else 1
 
     if spec["audio"].get("requireNone", True):

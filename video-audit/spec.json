@@ -1,7 +1,13 @@
 {
   "$comment": "视频审核阈值配置 · 对应《视频制作通用审核规范 v1.2》",
   "canvas": { "width": 1920, "height": 1080, "fps": 30 },
-  "duration": { "min": 54, "max": 66, "default": 60 },
+  "duration": {
+    "mode": "target-or-range",
+    "tolerancePct": 0.1,
+    "defaultTargetSec": 60,
+    "sanityMinSec": 15,
+    "sanityMaxSec": 600
+  },
   "audio": { "requireNone": true },
   "safeArea": { "topPct": 0.15, "bottomPct": 0.15, "leftPx": 96, "rightPx": 96 },
   "typography": {

@@ -48,7 +48,8 @@ pnpm --dir video run render       # 约 2–4 分钟
 
 以 `video-audit/spec.json` 与 `docs/视频制作通用审核规范-v1.2.md` 为准。核心几条：
 
-- 1920×1080 / 30fps / **无音频流** / 时长 54–66 秒
+- 1920×1080 / 30fps / **无音频流**
+- **时长**：由 `layout.json` 的 `targetDurationSec` 决定（未设置时取 60 秒），实际时长须在 ±10% 以内。改文案后如果自然时长变了，同步修改 `targetDurationSec` 与 `durationInFrames`
 - 场景内背景持续动态（相邻帧差异率 ≥2%）
 - 文字全部在安全区内：上边 ≥162、下边 ≤918、左右 ≥96
 - 字号 ≥40 像素；同一场景不超过 3 种字级

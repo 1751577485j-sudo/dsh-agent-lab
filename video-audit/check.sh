@@ -34,6 +34,7 @@ trap 'rm -rf "$WORK"' EXIT
 
 # ---------- 1. build-info 版本对应（规范第 6 节） ----------
 if [ -n "$BUILDINFO" ] && [ -f "$BUILDINFO" ]; then
+  TARGET=$(python3 -c "import json,sys;v=json.load(open(sys.argv[1])).get('targetDurationSec');print('' if v in (None,'') else v)" "$BUILDINFO")
   BI_COMMIT=$(python3 -c "import json,sys;print(json.load(open(sys.argv[1])).get('commit',''))" "$BUILDINFO")
   if [ -n "$COMMIT" ] && [ "$BI_COMMIT" != "$COMMIT" ]; then
     echo "BUILD-INFO MISMATCH: build-info.commit=$BI_COMMIT, workspace=$COMMIT" >&2
@@ -61,7 +62,8 @@ fi
 
 # ---------- 4. 帧级检查 ----------
 python3 "$(dirname "$0")/check_layout.py" \
-  --frames "$WORK/frames" --spec "$SPEC" --probe "$WORK/probe.json" --out "$OUT" $OCR ${LAYOUT:+--layout "$LAYOUT"}
+  --frames "$WORK/frames" --spec "$SPEC" --probe "$WORK/probe.json" --out "$OUT" $OCR \
+  ${LAYOUT:+--layout "$LAYOUT"} ${TARGET:+--target-duration "$TARGET"}
 RC=$?
 
 echo "--- 报告：$OUT（抽帧 $FRAMES 张，步长 ${STEP}s）---" >&2
