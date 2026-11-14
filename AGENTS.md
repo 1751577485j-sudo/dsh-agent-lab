@@ -75,17 +75,16 @@ pnpm --dir video run render       # 约 2–4 分钟
 
 ### 5.1 让成片在 Windows 上能直接打开
 
-WSL 里的路径用户看不到。每次交付，把成品复制一份到 Windows 可见目录：
+WSL 里的路径用户看不到。每次交付，把成品复制一份到 Windows 可见目录（该目录已存在）：
 
 ```bash
-DEST="/mnt/c/DSH/交付/$DSH_SUPERAGENT_TICKET"
+DEST="/mnt/c/Users/JZW/Documents/DSH交付/$DSH_SUPERAGENT_TICKET"
 mkdir -p "$DEST"
 cp video/out/final.mp4 video/out/preview.mp4 video/out/build-info.json \
    video/out/report.json CHANGES.md "$DEST/"
 ```
 
-PR 描述里写明该 Windows 路径，例如 `C:\DSH\交付\<ticket-id>\final.mp4`。
-若 `/mnt/c` 不可写，改用 `/mnt/c/Users/<用户名>/Documents/DSH交付/` 并在 PR 里说明。
+PR 描述里写明 Windows 路径：`C:\Users\JZW\Documents\DSH交付\<ticket-id>\final.mp4`。
 
 ## 6. 不要做
 
