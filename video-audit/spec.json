@@ -1,0 +1,27 @@
+{
+  "$comment": "视频审核阈值配置 · 对应《视频制作通用审核规范 v1.2》",
+  "canvas": { "width": 1920, "height": 1080, "fps": 30 },
+  "duration": { "min": 54, "max": 66, "default": 60 },
+  "audio": { "requireNone": true },
+  "safeArea": { "topPct": 0.15, "bottomPct": 0.15, "leftPx": 96, "rightPx": 96 },
+  "typography": {
+    "minFontPx": 40,
+    "levels": {
+      "L0": [160, 200],
+      "L1": [100, 120],
+      "L2": [72, 80],
+      "L3": [52, 60],
+      "L4": [40, 44]
+    },
+    "maxLevelsPerScene": 3,
+    "contrast": { "small": 4.5, "large": 3.0, "largeFromPx": 48 }
+  },
+  "background": {
+    "frameDiffMin": 0.02,
+    "staticCheckpointMaxPct": 0.30,
+    "scenePassMinPct": 0.90
+  },
+  "blackFrame": { "lumaBelow": 16, "minConsecutive": 5 },
+  "sampling": { "frameStepSec": 0.5, "ocrStepSec": 1.0 },
+  "tolerance": { "edgePx": 2 }
+}
