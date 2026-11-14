@@ -224,7 +224,8 @@ def main() -> int:
 
             # contrast measured on the frame closest to the middle of its visible window
             mid = (box["from"] + box["to"]) / 2
-            idx = min(len(frames) - 1, max(0, int(round(mid / step))))
+            fps = spec["canvas"]["fps"]
+            idx = min(len(frames) - 1, max(0, int(round(mid / fps / step))))
             c = box_contrast(frames[idx][1], box)
             if worst_contrast is None or c < worst_contrast["contrast"]:
                 worst_contrast = {"id": box["id"], "text": box["text"], "contrast": round(c, 2)}

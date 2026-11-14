@@ -56,14 +56,8 @@ mkdirSync(join(root, "out"), { recursive: true });
 console.log("[render] 1/2 渲染成片 final.mp4");
 run(bin, ["render", "src/index.ts", layout.composition.id, "out/final.mp4"]);
 
-console.log("[render] 2/2 渲染预览 preview.mp4（长边 854）");
-run(bin, [
-  "render",
-  "src/index.ts",
-  layout.composition.id,
-  "out/preview.mp4",
-  "--scale=0.444",
-]);
+console.log("[render] 2/2 渲染预览 preview.mp4（960×540，等同 0.5 倍）");
+run(bin, ["render", "src/index.ts", "Preview", "out/preview.mp4"]);
 
 const commit = (() => {
   const r = spawnSync("git", ["rev-parse", "--short", "HEAD"], { cwd: root, encoding: "utf8" });
