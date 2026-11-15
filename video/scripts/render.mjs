@@ -10,10 +10,14 @@ const layout = JSON.parse(readFileSync(join(root, "src/layout.json"), "utf8"));
 const FONT_SIZE = { L0: 180, L1: 110, L2: 76, L3: 56, L4: 42 };
 const LINE_HEIGHT = { L0: 1.05, L1: 1.15, L2: 1.25, L3: 1.35, L4: 1.4 };
 
-/** 必须与 src/theme.ts 的 textWidth 保持一致 */
+/** 必须与 src/theme.ts 的 textWidth 保持一致（取偏大值，保证包围盒不小于实际宽度） */
 function textWidth(text, fontSize) {
   let em = 0;
-  for (const ch of text) em += /[\u4e00-\u9fff]/.test(ch) ? 1 : 0.55;
+  for (const ch of text) {
+    if (/[\u3000-\u9fff\uff00-\uffef]/.test(ch)) em += 1;
+    else if (/[A-Z]/.test(ch)) em += 0.8;
+    else em += 0.65;
+  }
   return em * fontSize;
 }
 
